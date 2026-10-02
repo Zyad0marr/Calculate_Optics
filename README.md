@@ -1,100 +1,84 @@
-# نور للبصريات (Nour Optics)
+# Nour Optics (نور للبصريات)
 
-نظام ويب احترافي ومتجاوب لإدارة وحساب أسعار عدسات النظارات الطبية وسجل العملاء والطلبات. مصمم للعمل كـ Single Page Application (SPA) جاهزة للنشر المباشر على Vercel مع قاعدة بيانات Supabase.
+نظام ويب متكامل لإدارة وحساب أسعار عدسات النظارات الطبية وسجل العملاء والطلبات.
+مبني باستخدام **React + Vite** ومجهز للنشر المباشر على **Vercel** مع قاعدة بيانات **Supabase**.
 
 ---
 
-## 1. تثبيت الحزم (Installation)
+## Vercel Deployment Instructions
 
+Follow these exact steps to deploy this project directly to Vercel:
+
+### Step 1:
+Push project to GitHub.
 ```bash
-npm install
+git init
+git add .
+git commit -m "Initial commit of Nour Optics"
+git branch -M main
+git remote add origin https://github.com/<your-username>/<your-repo-name>.git
+git push -u origin main
 ```
 
----
+### Step 2:
+Import GitHub repository into Vercel:
+1. Log in to [Vercel](https://vercel.com).
+2. Click **"Add New"** -> **"Project"**.
+3. Select your GitHub repository.
 
-## 2. إنشاء مشروع Supabase
+### Step 3:
+Vercel should detect Vite automatically.
 
-1. توجه إلى [Supabase](https://supabase.com) وسجّل الدخول.
-2. اضغط على **"New Project"**.
-3. اختر اسم المشروع (مثلاً: `nour-optics`) وكلمة مرور قوية لقاعدة البيانات.
-4. انتظر دقيقة حتى يكتمل إنشاء المشروع.
-
----
-
-## 3. إنشاء جداول قاعدة البيانات (Create Database Tables)
-
-1. من لوحة تحكم مشروعك في Supabase، اضغط على **"SQL Editor"** من القائمة الجانبية.
-2. اضغط على **"New query"**.
-3. افتح ملف `supabase/schema.sql` الموجود في هذا المشروع وانسخ محتواه بالكامل.
-4. الصق الاستعلام في محرّر SQL في Supabase واضغط على **"Run"**.
-5. سيتم إنشاء الجداول الخمسة التالية فوراً مع تفعيل سياسات الأمان وتعبئة البيانات النموذجية:
-   - `companies` (الشركات)
-   - `lens_types` (أنواع العدسات)
-   - `pricing_rules` (قواعد التسعير)
-   - `customers` (العملاء)
-   - `orders` (الطلبات والمقاسات)
-
----
-
-## 4. متغيرات البيئة المحلية (Local Environment Variables)
-
-أنشئ ملفاً باسم `.env` في المجلد الرئيسي للتطبيق وأضف بيانات الاعتماد الخاصة بمشروع Supabase (يمكنك العثور عليها في Supabase تحت **Project Settings -> API**):
-
-```env
-VITE_SUPABASE_URL=https://your-project-id.supabase.co
-VITE_SUPABASE_ANON_KEY=your-anon-key-here
+### Step 4:
+Build Command:
 ```
-
----
-
-## 5. التشغيل محلياً (Run Locally)
-
-```bash
-npm run dev
-```
-
-افتح المتصفح على: `http://localhost:3000`
-
----
-
-## 6. البناء للإنتاج (Build for Production)
-
-```bash
 npm run build
 ```
 
-سيتم إنشاء ملفات الإنتاج المجمعة والمحسنة داخل مجلد `dist`.
+### Step 5:
+Output Directory:
+```
+dist
+```
+
+### Step 6:
+Add these Vercel Environment Variables in your Vercel project settings (**Settings -> Environment Variables**):
+- `VITE_SUPABASE_URL` : Your Supabase project URL (e.g. `https://xyzproject.supabase.co`)
+- `VITE_SUPABASE_ANON_KEY` : Your Supabase anon public key
+
+### Step 7:
+Deploy.
+Click **"Deploy"**. Your application will be live on Vercel with zero additional configuration needed.
 
 ---
 
-## 7. النشر على Vercel (Deploy to Vercel)
+## Supabase Database Setup
 
-1. ارفع المشروع إلى حسابك على **GitHub**.
-2. توجّه إلى [Vercel](https://vercel.com) واضغط على **"Add New" -> "Project"**.
-3. اختر المستودع الخاص بالمشروع من GitHub.
-4. في شاشة الإعدادات في Vercel:
-   - **Framework Preset**: Vite
-   - **Build Command**: `npm run build`
-   - **Output Directory**: `dist`
-5. اضغط على قسم **"Environment Variables"** وأضف المتغيرين التاليين (انظر البند 8).
-6. اضغط على **"Deploy"**.
+1. Create a project at [supabase.com](https://supabase.com).
+2. Go to **SQL Editor** in the Supabase dashboard.
+3. Open `supabase/schema.sql` from this repository and run it. It will create all tables (`companies`, `lens_types`, `pricing_rules`, `customers`, `orders`) with Row Level Security (RLS) policies and initial sample data.
+4. Copy your project URL and anon public key from **Project Settings -> API** and add them to `.env` (locally) or Vercel Environment Variables (in production).
 
 ---
 
-## 8. متغيرات بيئة Vercel المطلوبة (Vercel Environment Variables)
+## Local Development
 
-أضف هذين المتغيرين في لوحة تحكم Vercel تحت **Settings -> Environment Variables**:
+```bash
+# Install dependencies
+npm install
 
-| اسم المتغير | الوصف | مثال |
-|---|---|---|
-| `VITE_SUPABASE_URL` | رابط مشروع Supabase | `https://xyzproject.supabase.co` |
-| `VITE_SUPABASE_ANON_KEY` | المفتاح العام المجهول (anon public key) | `eyJhbGciOiJIUzI1NiIsIn...` |
+# Run local development server (runs on http://localhost:3000)
+npm run dev
+
+# Build for production (outputs to dist/)
+npm run build
+```
 
 ---
 
-## 9. بيانات تسجيل الدخول الافتراضية
+## Login Credentials
 
-- **اسم المستخدم (Username)**: `nour` (أحرف إنجليزية صغيرة)
-- **كلمة المرور (Password)**: `nour` (أحرف إنجليزية صغيرة)
+- **Username**: `nour` (lowercase English)
+- **Password**: `nour` (lowercase English)
 
-*بيانات تسجيل الدخول لا تظهر في أي مكان على واجهة المستخدم، وتتطلب إدخالاً يدوياً.*
+*Credentials are strictly protected and never displayed in the application interface.*
