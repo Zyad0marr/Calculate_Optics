@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff, Lock, User, Glasses } from 'lucide-react';
-import { authService } from '../services/api';
+import { authService } from '../services/auth';
 
 interface LoginPageProps {
   onLoginSuccess: () => void;

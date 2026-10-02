@@ -1,21 +1,30 @@
 -- Nour Optics Database Schema
--- Run this in your Supabase SQL Editor
+-- Run this script in your Supabase SQL Editor (supabase.com -> SQL Editor)
 
--- 1. Create Companies Table
+-- 1. Create Users Table for Authentication
+CREATE TABLE IF NOT EXISTS users (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    username TEXT NOT NULL UNIQUE,
+    password_hash TEXT NOT NULL,
+    created_at TIMESTAMPTZ DEFAULT now(),
+    updated_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- 2. Create Companies Table
 CREATE TABLE IF NOT EXISTS companies (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name TEXT NOT NULL UNIQUE,
     created_at TIMESTAMPTZ DEFAULT now()
 );
 
--- 2. Create Lens Types Table
+-- 3. Create Lens Types Table
 CREATE TABLE IF NOT EXISTS lens_types (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name TEXT NOT NULL UNIQUE,
     created_at TIMESTAMPTZ DEFAULT now()
 );
 
--- 3. Create Pricing Rules Table
+-- 4. Create Pricing Rules Table
 CREATE TABLE IF NOT EXISTS pricing_rules (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     company_id UUID NOT NULL REFERENCES companies(id) ON DELETE CASCADE,
@@ -26,7 +35,7 @@ CREATE TABLE IF NOT EXISTS pricing_rules (
     created_at TIMESTAMPTZ DEFAULT now()
 );
 
--- 4. Create Customers Table
+-- 5. Create Customers Table
 CREATE TABLE IF NOT EXISTS customers (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name TEXT NOT NULL,
@@ -34,7 +43,7 @@ CREATE TABLE IF NOT EXISTS customers (
     created_at TIMESTAMPTZ DEFAULT now()
 );
 
--- 5. Create Orders Table
+-- 6. Create Orders Table
 CREATE TABLE IF NOT EXISTS orders (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     customer_id UUID REFERENCES customers(id) ON DELETE CASCADE,
@@ -53,27 +62,47 @@ CREATE TABLE IF NOT EXISTS orders (
     created_at TIMESTAMPTZ DEFAULT now()
 );
 
--- 6. Enable Row Level Security (RLS) on all tables
+-- 7. Enable Row Level Security (RLS) on all tables
+ALTER TABLE users ENABLE ROW LEVEL SECURITY;
 ALTER TABLE companies ENABLE ROW LEVEL SECURITY;
 ALTER TABLE lens_types ENABLE ROW LEVEL SECURITY;
 ALTER TABLE pricing_rules ENABLE ROW LEVEL SECURITY;
 ALTER TABLE customers ENABLE ROW LEVEL SECURITY;
 ALTER TABLE orders ENABLE ROW LEVEL SECURITY;
 
--- 7. Create Policies for Anon Access (authenticated by client session)
+-- 8. Create Policies for Access
+DROP POLICY IF EXISTS "Allow all operations for anon on users" ON users;
+CREATE POLICY "Allow all operations for anon on users" ON users FOR ALL USING (true) WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Allow all operations for anon" ON companies;
 CREATE POLICY "Allow all operations for anon" ON companies FOR ALL USING (true) WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Allow all operations for anon" ON lens_types;
 CREATE POLICY "Allow all operations for anon" ON lens_types FOR ALL USING (true) WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Allow all operations for anon" ON pricing_rules;
 CREATE POLICY "Allow all operations for anon" ON pricing_rules FOR ALL USING (true) WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Allow all operations for anon" ON customers;
 CREATE POLICY "Allow all operations for anon" ON customers FOR ALL USING (true) WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Allow all operations for anon" ON orders;
 CREATE POLICY "Allow all operations for anon" ON orders FOR ALL USING (true) WITH CHECK (true);
 
--- 8. Seed Initial Default Data
+-- 9. Seed Initial Default Data
+-- Seed default user 'nour' with password 'nour' (SHA-256 hash)
+INSERT INTO users (username, password_hash)
+VALUES ('nour', '626f8d387b9f5e135b91b9f67a78377d248b6c4bbfba08b776ec0150937a0751')
+ON CONFLICT (username) DO NOTHING;
+
+-- Seed default companies
 INSERT INTO companies (name) VALUES 
 ('ZEISS'),
 ('Essilor'),
 ('HOYA')
 ON CONFLICT (name) DO NOTHING;
 
+-- Seed default lens types
 INSERT INTO lens_types (name) VALUES 
 ('Single Vision'),
 ('Blue Cut'),

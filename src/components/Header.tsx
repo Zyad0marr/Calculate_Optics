@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Glasses, Calculator, Building2, Layers, DollarSign, LogOut, UserCheck } from 'lucide-react';
+import { Glasses, Calculator, Building2, Layers, DollarSign, LogOut, UserCheck, KeyRound } from 'lucide-react';
 
 interface HeaderProps {
   onLogout: () => void;
@@ -16,6 +16,7 @@ export const Header: React.FC<HeaderProps> = ({ onLogout }) => {
     { path: '/companies', label: 'الشركات', icon: Building2 },
     { path: '/lens-types', label: 'أنواع العدسات', icon: Layers },
     { path: '/pricing', label: 'قواعد التسعير', icon: DollarSign },
+    { path: '/change-password', label: 'تغيير كلمة المرور', icon: KeyRound },
   ];
 
   return (
