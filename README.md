@@ -1,84 +1,56 @@
 # Nour Optics (نور للبصريات)
 
-نظام ويب متكامل لإدارة وحساب أسعار عدسات النظارات الطبية وسجل العملاء والطلبات.
-مبني باستخدام **React + Vite** ومجهز للنشر المباشر على **Vercel** مع قاعدة بيانات **Supabase**.
+نظام ويب احترافي متكامل لإدارة وحساب أسعار عدسات النظارات الطبية وإدارة العملاء والطلبات.
+مبني باستخدام **React + Vite** مع دعم قاعدة بيانات **Supabase**.
 
 ---
 
-## Vercel Deployment Instructions
+## الميزات الرئيسية
 
-Follow these exact steps to deploy this project directly to Vercel:
-
-### Step 1:
-Push project to GitHub.
-```bash
-git init
-git add .
-git commit -m "Initial commit of Nour Optics"
-git branch -M main
-git remote add origin https://github.com/<your-username>/<your-repo-name>.git
-git push -u origin main
-```
-
-### Step 2:
-Import GitHub repository into Vercel:
-1. Log in to [Vercel](https://vercel.com).
-2. Click **"Add New"** -> **"Project"**.
-3. Select your GitHub repository.
-
-### Step 3:
-Vercel should detect Vite automatically.
-
-### Step 4:
-Build Command:
-```
-npm run build
-```
-
-### Step 5:
-Output Directory:
-```
-dist
-```
-
-### Step 6:
-Add these Vercel Environment Variables in your Vercel project settings (**Settings -> Environment Variables**):
-- `VITE_SUPABASE_URL` : Your Supabase project URL (e.g. `https://xyzproject.supabase.co`)
-- `VITE_SUPABASE_ANON_KEY` : Your Supabase anon public key
-
-### Step 7:
-Deploy.
-Click **"Deploy"**. Your application will be live on Vercel with zero additional configuration needed.
+- **تسجيل الدخول الآمن**: حماية كاملة للنظام (اسم المستخدم: `nour`، كلمة المرور: `nour`).
+- **حاسبة الأسعار الذكية**:
+  - حساب فوري بناءً على الشركة ونوع العدسة.
+  - دعم تحديد العيون المطلوبة (العينين / العين اليمنى فقط / العين اليسرى فقط).
+  - دعم المقاسات الكروية (SPH) والأسطوانية (CYL).
+  - معالجة المقاسات الموجبة والسالبة بالتساوي وفق القيمة المطلقة `ABS(Prescription)`.
+  - عرض السعر النهائي بشكل فوري ومباشر.
+- **إدارة الشركات**: إضافة وحذف شركات العدسات (مثل ZEISS, Essilor, HOYA) مع نوافذ تأكيد.
+- **إدارة أنواع العدسات**: إضافة وحذف الأنواع (مثل Single Vision, Blue Cut, Photochromic).
+- **قواعد التسعير**: تحديد النطاقات والأسعار بسهولة لكل شركة ونوع.
+- **سجل العملاء والطلبات**: حفظ وتتبع طلبات ومقاسات العملاء.
+- **تصميم متجاوب بالكامل**: واجهة عربية RTL محسنة للهواتف الذكية والأجهزة اللوحية وأجهزة الكمبيوتر.
 
 ---
 
-## Supabase Database Setup
+## إعداد قاعدة بيانات Supabase
 
-1. Create a project at [supabase.com](https://supabase.com).
-2. Go to **SQL Editor** in the Supabase dashboard.
-3. Open `supabase/schema.sql` from this repository and run it. It will create all tables (`companies`, `lens_types`, `pricing_rules`, `customers`, `orders`) with Row Level Security (RLS) policies and initial sample data.
-4. Copy your project URL and anon public key from **Project Settings -> API** and add them to `.env` (locally) or Vercel Environment Variables (in production).
+1. أنشئ مشروعاً على [supabase.com](https://supabase.com).
+2. افتح **SQL Editor** في لوحة تحكم Supabase.
+3. انسخ محتوى ملف `supabase/schema.sql` ونفّذه لإنشاء الجداول وسياسات الأمان والبيانات النموذجية.
+4. أضف بيانات الاتصال إلى ملف `.env`:
+   ```env
+   VITE_SUPABASE_URL=https://your-project-id.supabase.co
+   VITE_SUPABASE_ANON_KEY=your-anon-key-here
+   ```
 
 ---
 
-## Local Development
+## التشغيل المحلي
 
 ```bash
-# Install dependencies
+# تثبيت الحزم
 npm install
 
-# Run local development server (runs on http://localhost:3000)
+# تشغيل خادم التطوير
 npm run dev
 
-# Build for production (outputs to dist/)
+# بناء المشروع
 npm run build
 ```
 
 ---
 
-## Login Credentials
+## بيانات تسجيل الدخول
 
-- **Username**: `nour` (lowercase English)
-- **Password**: `nour` (lowercase English)
-
-*Credentials are strictly protected and never displayed in the application interface.*
+- **اسم المستخدم**: `nour` (أحرف إنجليزية صغيرة)
+- **كلمة المرور**: `nour` (أحرف إنجليزية صغيرة)

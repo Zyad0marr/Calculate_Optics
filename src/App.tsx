@@ -93,7 +93,7 @@ function MainApp() {
         </main>
 
         <footer className="py-4 border-t border-slate-200/80 bg-white/60 text-center text-xs text-slate-400">
-          نور للبصريات · نظام تسعير العدسات والعملاء · جاهز للنشر على Vercel
+          نور للبصريات · نظام تسعير العدسات والعملاء
         </footer>
       </div>
     );
