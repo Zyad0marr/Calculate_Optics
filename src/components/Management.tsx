@@ -281,37 +281,39 @@ export const Management: React.FC<ManagementProps> = ({
       {/* SECTION: COMPANIES (الشركات) */}
       {/* ------------------------------------------------------------- */}
       {activeSection === 'companies' && (
-        <div className="bg-white border border-slate-200 rounded-2xl p-5 sm:p-7 shadow-xs space-y-6">
-          <div className="border-b border-slate-100 pb-4">
-            <h3 className="text-xl font-bold text-slate-900 flex items-center gap-2">
-              <Building2 className="w-5 h-5 text-slate-700" />
+        <div className="glass-surface rounded-3xl p-5 sm:p-8 shadow-[0_10px_35px_rgba(20,30,22,0.05)] border border-[#d6e2d8] space-y-6">
+          <div className="border-b border-[#e1ece3] pb-4">
+            <h3 className="text-xl font-bold text-[#141d16] flex items-center gap-2.5">
+              <span className="p-2 rounded-xl bg-[#eef4ee] text-[#384e3c] border border-[#cad9cc]">
+                <Building2 className="w-5 h-5" />
+              </span>
               <span>الشركات</span>
             </h3>
-            <p className="text-xs sm:text-sm text-slate-500 mt-1">
-              إضافة وإدارة وحذف شركات العدسات (مثل ZEISS, Essilor, HOYA)
+            <p className="text-xs sm:text-sm text-[#617b66] mt-1">
+              إضافة وإدارة وحذف شركات العدسات المعتمدة (مثل ZEISS, Essilor, HOYA)
             </p>
           </div>
 
           {/* Add Company Form */}
           <form onSubmit={handleAddCompany} className="space-y-3">
             {companyError && (
-              <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs font-semibold rounded-xl">
+              <div className="p-3 bg-rose-50 border border-rose-200 text-rose-800 text-xs font-semibold rounded-xl">
                 {companyError}
               </div>
             )}
-            <div className="flex gap-2">
+            <div className="flex gap-2.5">
               <input
                 type="text"
                 value={newCompanyName}
                 onChange={(e) => setNewCompanyName(e.target.value)}
                 placeholder="اسم الشركة (مثال: ZEISS أو Essilor)"
-                className="flex-1 h-12 px-4 rounded-xl border border-slate-300 bg-white text-slate-900 text-base font-semibold focus:outline-none focus:ring-2 focus:ring-slate-900"
+                className="flex-1 h-12 px-4 rounded-xl border border-[#cbd8cd] bg-white text-[#141d16] text-base font-semibold focus:outline-none focus:ring-2 focus:ring-[#384e3c]/20 focus:border-[#384e3c] placeholder:text-[#8ea592]/60 placeholder:font-normal"
                 required
               />
               <button
                 type="submit"
                 disabled={loadingAction}
-                className="px-5 h-12 bg-slate-900 hover:bg-slate-800 disabled:opacity-50 text-white text-sm font-bold rounded-xl flex items-center gap-1.5 cursor-pointer whitespace-nowrap active:scale-[0.98] transition-transform"
+                className="px-5 h-12 bg-gradient-to-b from-[#384e3c] to-[#27382b] hover:from-[#415a45] hover:to-[#2e4233] disabled:opacity-50 text-white text-sm font-bold rounded-xl flex items-center gap-1.5 cursor-pointer whitespace-nowrap active:scale-[0.98] transition-transform shadow-sm subtle-rim-light"
               >
                 {loadingAction ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
                 <span>إضافة شركة</span>
@@ -320,9 +322,9 @@ export const Management: React.FC<ManagementProps> = ({
           </form>
 
           {/* Companies List */}
-          <div className="border border-slate-200 rounded-xl divide-y divide-slate-100 overflow-hidden">
+          <div className="border border-[#d6e2d8] rounded-2xl divide-y divide-[#e3ece5] overflow-hidden bg-white/70">
             {data.companies.length === 0 ? (
-              <div className="p-8 text-center text-slate-400 text-sm">
+              <div className="p-8 text-center text-[#7e9683] text-sm">
                 لا توجد شركات مضافة حالياً. اكتب اسم الشركة واضغط على &quot;إضافة شركة&quot;.
               </div>
             ) : (
@@ -331,18 +333,18 @@ export const Management: React.FC<ManagementProps> = ({
                 return (
                   <div
                     key={comp.id}
-                    className="p-4 flex items-center justify-between hover:bg-slate-50/70 transition-colors"
+                    className="p-4 flex items-center justify-between hover:bg-[#f6f9f6] transition-colors"
                   >
                     <div>
-                      <span className="font-bold text-slate-900 text-base">{comp.name}</span>
-                      <span className="text-xs text-slate-400 mr-3">
-                        ({rulesCount} قاعدة تسعير)
+                      <span className="font-bold text-[#152017] text-base">{comp.name}</span>
+                      <span className="text-xs text-[#5e7964] mr-3 bg-[#edf4ee] px-2.5 py-0.5 rounded-lg border border-[#d2ded4]">
+                        {rulesCount} قاعدة تسعير
                       </span>
                     </div>
                     <button
                       type="button"
                       onClick={() => promptDeleteCompany(comp.id)}
-                      className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer min-w-[40px] min-h-[40px] flex items-center justify-center"
+                      className="p-2 text-[#7f9984] hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-colors cursor-pointer min-w-[40px] min-h-[40px] flex items-center justify-center"
                       title="حذف الشركة"
                       aria-label={`حذف ${comp.name}`}
                     >
@@ -360,13 +362,15 @@ export const Management: React.FC<ManagementProps> = ({
       {/* SECTION: LENS TYPES (أنواع العدسات) */}
       {/* ------------------------------------------------------------- */}
       {activeSection === 'lensTypes' && (
-        <div className="bg-white border border-slate-200 rounded-2xl p-5 sm:p-7 shadow-xs space-y-6">
-          <div className="border-b border-slate-100 pb-4">
-            <h3 className="text-xl font-bold text-slate-900 flex items-center gap-2">
-              <Layers className="w-5 h-5 text-slate-700" />
+        <div className="glass-surface rounded-3xl p-5 sm:p-8 shadow-[0_10px_35px_rgba(20,30,22,0.05)] border border-[#d6e2d8] space-y-6">
+          <div className="border-b border-[#e1ece3] pb-4">
+            <h3 className="text-xl font-bold text-[#141d16] flex items-center gap-2.5">
+              <span className="p-2 rounded-xl bg-[#eef4ee] text-[#384e3c] border border-[#cad9cc]">
+                <Layers className="w-5 h-5" />
+              </span>
               <span>أنواع العدسات</span>
             </h3>
-            <p className="text-xs sm:text-sm text-slate-500 mt-1">
+            <p className="text-xs sm:text-sm text-[#617b66] mt-1">
               إضافة وإدارة وحذف أنواع العدسات (مثل Single Vision, Blue Cut, Photochromic)
             </p>
           </div>
@@ -374,23 +378,23 @@ export const Management: React.FC<ManagementProps> = ({
           {/* Add Lens Type Form */}
           <form onSubmit={handleAddLensType} className="space-y-3">
             {lensTypeError && (
-              <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs font-semibold rounded-xl">
+              <div className="p-3 bg-rose-50 border border-rose-200 text-rose-800 text-xs font-semibold rounded-xl">
                 {lensTypeError}
               </div>
             )}
-            <div className="flex gap-2">
+            <div className="flex gap-2.5">
               <input
                 type="text"
                 value={newLensTypeName}
                 onChange={(e) => setNewLensTypeName(e.target.value)}
                 placeholder="نوع العدسة (مثال: Blue Cut أو Photochromic)"
-                className="flex-1 h-12 px-4 rounded-xl border border-slate-300 bg-white text-slate-900 text-base font-semibold focus:outline-none focus:ring-2 focus:ring-slate-900"
+                className="flex-1 h-12 px-4 rounded-xl border border-[#cbd8cd] bg-white text-[#141d16] text-base font-semibold focus:outline-none focus:ring-2 focus:ring-[#384e3c]/20 focus:border-[#384e3c] placeholder:text-[#8ea592]/60 placeholder:font-normal"
                 required
               />
               <button
                 type="submit"
                 disabled={loadingAction}
-                className="px-5 h-12 bg-slate-900 hover:bg-slate-800 disabled:opacity-50 text-white text-sm font-bold rounded-xl flex items-center gap-1.5 cursor-pointer whitespace-nowrap active:scale-[0.98] transition-transform"
+                className="px-5 h-12 bg-gradient-to-b from-[#384e3c] to-[#27382b] hover:from-[#415a45] hover:to-[#2e4233] disabled:opacity-50 text-white text-sm font-bold rounded-xl flex items-center gap-1.5 cursor-pointer whitespace-nowrap active:scale-[0.98] transition-transform shadow-sm subtle-rim-light"
               >
                 {loadingAction ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
                 <span>إضافة نوع</span>
@@ -399,9 +403,9 @@ export const Management: React.FC<ManagementProps> = ({
           </form>
 
           {/* Lens Types List */}
-          <div className="border border-slate-200 rounded-xl divide-y divide-slate-100 overflow-hidden">
+          <div className="border border-[#d6e2d8] rounded-2xl divide-y divide-[#e3ece5] overflow-hidden bg-white/70">
             {data.lensTypes.length === 0 ? (
-              <div className="p-8 text-center text-slate-400 text-sm">
+              <div className="p-8 text-center text-[#7e9683] text-sm">
                 لا توجد أنواع عدسات مضافة حالياً. اكتب اسم النوع واضغط على &quot;إضافة نوع&quot;.
               </div>
             ) : (
@@ -410,18 +414,18 @@ export const Management: React.FC<ManagementProps> = ({
                 return (
                   <div
                     key={lt.id}
-                    className="p-4 flex items-center justify-between hover:bg-slate-50/70 transition-colors"
+                    className="p-4 flex items-center justify-between hover:bg-[#f6f9f6] transition-colors"
                   >
                     <div>
-                      <span className="font-bold text-slate-900 text-base">{lt.name}</span>
-                      <span className="text-xs text-slate-400 mr-3">
-                        ({rulesCount} قاعدة تسعير)
+                      <span className="font-bold text-[#152017] text-base">{lt.name}</span>
+                      <span className="text-xs text-[#5e7964] mr-3 bg-[#edf4ee] px-2.5 py-0.5 rounded-lg border border-[#d2ded4]">
+                        {rulesCount} قاعدة تسعير
                       </span>
                     </div>
                     <button
                       type="button"
                       onClick={() => promptDeleteLensType(lt.id)}
-                      className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer min-w-[40px] min-h-[40px] flex items-center justify-center"
+                      className="p-2 text-[#7f9984] hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-colors cursor-pointer min-w-[40px] min-h-[40px] flex items-center justify-center"
                       title="حذف نوع العدسة"
                       aria-label={`حذف ${lt.name}`}
                     >
@@ -441,20 +445,22 @@ export const Management: React.FC<ManagementProps> = ({
       {activeSection === 'pricingRules' && (
         <div className="space-y-6">
           {/* Filter Bar: Select Company & Lens Type */}
-          <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs">
-            <h3 className="text-base font-bold text-slate-900 mb-3 flex items-center gap-2">
-              <DollarSign className="w-4 h-4 text-slate-700" />
+          <div className="glass-surface rounded-3xl p-5 sm:p-6 shadow-[0_10px_35px_rgba(20,30,22,0.05)] border border-[#d6e2d8]">
+            <h3 className="text-base font-bold text-[#152017] mb-3 flex items-center gap-2">
+              <span className="p-1.5 rounded-lg bg-[#eef4ee] text-[#384e3c] border border-[#cad9cc]">
+                <DollarSign className="w-4 h-4" />
+              </span>
               <span>تحديد الشركة ونوع العدسة لإدارة الأسعار</span>
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-semibold text-slate-600 mb-1.5">
+                <label className="block text-xs font-semibold text-[#304434] mb-1.5">
                   الشركة
                 </label>
                 <select
                   value={selectedCompanyId}
                   onChange={(e) => setSelectedCompanyId(e.target.value)}
-                  className="w-full h-11 px-3.5 rounded-xl border border-slate-300 bg-slate-50 text-slate-900 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-slate-900 focus:bg-white"
+                  className="w-full h-11 px-3.5 rounded-xl border border-[#cbd8cd] bg-white text-[#152017] text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#384e3c]/20 focus:border-[#384e3c]"
                 >
                   {data.companies.length === 0 ? (
                     <option value="">لا توجد شركات مسجلة</option>
@@ -469,13 +475,13 @@ export const Management: React.FC<ManagementProps> = ({
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-600 mb-1.5">
+                <label className="block text-xs font-semibold text-[#304434] mb-1.5">
                   نوع العدسة
                 </label>
                 <select
                   value={selectedLensTypeId}
                   onChange={(e) => setSelectedLensTypeId(e.target.value)}
-                  className="w-full h-11 px-3.5 rounded-xl border border-slate-300 bg-slate-50 text-slate-900 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-slate-900 focus:bg-white"
+                  className="w-full h-11 px-3.5 rounded-xl border border-[#cbd8cd] bg-white text-[#152017] text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#384e3c]/20 focus:border-[#384e3c]"
                 >
                   {data.lensTypes.length === 0 ? (
                     <option value="">لا توجد أنواع عدسات مسجلة</option>
@@ -492,13 +498,13 @@ export const Management: React.FC<ManagementProps> = ({
           </div>
 
           {/* Pricing Rules for Selected Combination */}
-          <div className="bg-white border border-slate-200 rounded-2xl p-5 sm:p-7 shadow-xs space-y-4">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-slate-100 pb-4">
+          <div className="glass-surface rounded-3xl p-5 sm:p-7 shadow-[0_10px_35px_rgba(20,30,22,0.05)] border border-[#d6e2d8] space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-[#e1ece3] pb-4">
               <div>
-                <h4 className="text-base font-bold text-slate-900">
+                <h4 className="text-base font-bold text-[#152017]">
                   قواعد التسعير لـ {selectedCompany?.name || '...'} · {selectedLensType?.name || '...'}
                 </h4>
-                <p className="text-xs text-slate-500 mt-0.5">
+                <p className="text-xs text-[#617b66] mt-0.5">
                   النطاق يطابق القيمة المطلقة للمقاس ABS(Prescription)
                 </p>
               </div>
@@ -507,7 +513,7 @@ export const Management: React.FC<ManagementProps> = ({
                 <button
                   onClick={() => setIsAddingRule(true)}
                   disabled={!selectedCompanyId || !selectedLensTypeId}
-                  className="flex items-center justify-center gap-1.5 px-4 py-2.5 bg-slate-900 hover:bg-slate-800 disabled:opacity-50 text-white text-xs sm:text-sm font-bold rounded-xl transition-all cursor-pointer"
+                  className="flex items-center justify-center gap-1.5 px-4.5 py-2.5 bg-gradient-to-b from-[#384e3c] to-[#27382b] hover:from-[#415a45] hover:to-[#2e4233] disabled:opacity-50 text-white text-xs sm:text-sm font-bold rounded-xl transition-all cursor-pointer shadow-sm subtle-rim-light"
                 >
                   <Plus className="w-4 h-4" />
                   <span>إضافة نطاق تسعير</span>
@@ -517,9 +523,9 @@ export const Management: React.FC<ManagementProps> = ({
 
             {/* 8. PRICING RULES FORM: ONLY Range & Price */}
             {isAddingRule && (
-              <form onSubmit={handleAddRule} className="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-4">
+              <form onSubmit={handleAddRule} className="p-4.5 bg-[#f6f9f6] border border-[#d2ded4] rounded-2xl space-y-4">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-bold text-slate-800">
+                  <span className="text-sm font-bold text-[#152017]">
                     إضافة نطاق تسعير جديد
                   </span>
                   <button
@@ -528,14 +534,14 @@ export const Management: React.FC<ManagementProps> = ({
                       setIsAddingRule(false);
                       setRuleError(null);
                     }}
-                    className="text-xs text-slate-500 hover:text-slate-700 cursor-pointer"
+                    className="text-xs text-[#5e7763] hover:text-[#18231b] cursor-pointer"
                   >
                     إلغاء
                   </button>
                 </div>
 
                 {ruleError && (
-                  <div className="p-2.5 bg-rose-50 border border-rose-200 text-rose-700 text-xs font-semibold rounded-lg">
+                  <div className="p-2.5 bg-rose-50 border border-rose-200 text-rose-800 text-xs font-semibold rounded-xl">
                     {ruleError}
                   </div>
                 )}
@@ -543,7 +549,7 @@ export const Management: React.FC<ManagementProps> = ({
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {/* Field 1: Range */}
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                    <label className="block text-xs font-bold text-[#2a3d2e] mb-1.5">
                       النطاق (Range)
                     </label>
                     <div className="flex items-center gap-2">
@@ -551,21 +557,21 @@ export const Management: React.FC<ManagementProps> = ({
                         type="number"
                         step="0.25"
                         min="0"
-                        placeholder="من: 0.00"
+                        placeholder="من (مثال: 0.00)"
                         value={minRange}
                         onChange={(e) => setMinRange(e.target.value)}
-                        className="w-1/2 h-11 px-3 text-center rounded-lg border border-slate-300 bg-white text-slate-900 text-base font-bold focus:outline-none focus:ring-2 focus:ring-slate-900 tabular-nums"
+                        className="w-1/2 h-11 px-3 text-center rounded-xl border border-[#cbd8cd] bg-white text-[#152017] text-base font-bold focus:outline-none focus:ring-2 focus:ring-[#384e3c]/20 focus:border-[#384e3c] tabular-nums placeholder:text-[#8ea592]/60 placeholder:font-normal placeholder:text-xs"
                         required
                       />
-                      <span className="text-slate-400 text-sm font-bold">-</span>
+                      <span className="text-[#89a28e] text-sm font-bold">-</span>
                       <input
                         type="number"
                         step="0.25"
                         min="0"
-                        placeholder="إلى: 2.00"
+                        placeholder="إلى (مثال: 2.00)"
                         value={maxRange}
                         onChange={(e) => setMaxRange(e.target.value)}
-                        className="w-1/2 h-11 px-3 text-center rounded-lg border border-slate-300 bg-white text-slate-900 text-base font-bold focus:outline-none focus:ring-2 focus:ring-slate-900 tabular-nums"
+                        className="w-1/2 h-11 px-3 text-center rounded-xl border border-[#cbd8cd] bg-white text-[#152017] text-base font-bold focus:outline-none focus:ring-2 focus:ring-[#384e3c]/20 focus:border-[#384e3c] tabular-nums placeholder:text-[#8ea592]/60 placeholder:font-normal placeholder:text-xs"
                         required
                       />
                     </div>
@@ -573,7 +579,7 @@ export const Management: React.FC<ManagementProps> = ({
 
                   {/* Field 2: Price */}
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                    <label className="block text-xs font-bold text-[#2a3d2e] mb-1.5">
                       السعر (Price)
                     </label>
                     <div className="relative">
@@ -583,10 +589,10 @@ export const Management: React.FC<ManagementProps> = ({
                         placeholder="مثال: 200"
                         value={price}
                         onChange={(e) => setPrice(e.target.value)}
-                        className="w-full h-11 pr-3 pl-12 rounded-lg border border-slate-300 bg-white text-slate-900 text-base font-bold focus:outline-none focus:ring-2 focus:ring-slate-900 tabular-nums"
+                        className="w-full h-11 pr-3 pl-12 rounded-xl border border-[#cbd8cd] bg-white text-[#152017] text-base font-bold focus:outline-none focus:ring-2 focus:ring-[#384e3c]/20 focus:border-[#384e3c] tabular-nums placeholder:text-[#8ea592]/60 placeholder:font-normal placeholder:text-sm"
                         required
                       />
-                      <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-xs font-bold text-slate-400 pointer-events-none">
+                      <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-xs font-bold text-[#6d8872] pointer-events-none">
                         جنيه
                       </span>
                     </div>
@@ -600,14 +606,14 @@ export const Management: React.FC<ManagementProps> = ({
                       setIsAddingRule(false);
                       setRuleError(null);
                     }}
-                    className="px-4 py-2 text-xs font-medium text-slate-600 hover:text-slate-900 bg-white border border-slate-300 rounded-lg cursor-pointer"
+                    className="px-4 py-2 text-xs font-medium text-[#465c49] hover:text-[#18231b] bg-white border border-[#cbd7cd] rounded-xl cursor-pointer"
                   >
                     إلغاء
                   </button>
                   <button
                     type="submit"
                     disabled={loadingAction}
-                    className="px-5 py-2 text-xs font-bold text-white bg-slate-900 hover:bg-slate-800 disabled:opacity-50 rounded-lg transition-colors cursor-pointer flex items-center gap-1.5"
+                    className="px-5 py-2 text-xs font-bold text-white bg-gradient-to-b from-[#384e3c] to-[#27382b] hover:from-[#415a45] hover:to-[#2e4233] disabled:opacity-50 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 shadow-xs"
                   >
                     {loadingAction ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : null}
                     <span>حفظ القاعدة</span>
@@ -618,31 +624,31 @@ export const Management: React.FC<ManagementProps> = ({
 
             {/* Rules List */}
             {currentRules.length === 0 ? (
-              <div className="text-center py-8 text-slate-400 text-sm">
+              <div className="text-center py-8 text-[#7e9683] text-sm">
                 لا توجد قواعد تسعير مسجلة لهذا النوع والشركة. انقر على &quot;إضافة نطاق تسعير&quot; للبدء.
               </div>
             ) : (
-              <div className="divide-y divide-slate-100">
+              <div className="divide-y divide-[#e3ece5]">
                 {currentRules.map((rule) => {
                   const min = rule.min_range !== undefined ? rule.min_range : rule.minRange;
                   const max = rule.max_range !== undefined ? rule.max_range : rule.maxRange;
                   return (
                     <div
                       key={rule.id}
-                      className="py-3 flex items-center justify-between hover:bg-slate-50/70 px-2 rounded-lg transition-colors"
+                      className="py-3.5 flex items-center justify-between hover:bg-[#f6f9f6] px-3 rounded-xl transition-colors"
                     >
                       <div className="flex items-center gap-3">
-                        <div className="px-3 py-1.5 bg-slate-100 border border-slate-200 rounded-lg text-slate-800 font-bold text-sm tabular-nums">
+                        <div className="px-3.5 py-1.5 bg-[#edf4ee] border border-[#d2dfd4] rounded-xl text-[#263728] font-bold text-sm tabular-nums">
                           النطاق: {formatRange(min, max)}
                         </div>
-                        <div className="text-base font-extrabold text-slate-900">
+                        <div className="text-base sm:text-lg font-extrabold text-[#141e15]">
                           {rule.price} جنيه
                         </div>
                       </div>
                       <button
                         type="button"
                         onClick={() => promptDeleteRule(rule.id)}
-                        className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer min-w-[40px] min-h-[40px] flex items-center justify-center"
+                        className="p-2 text-[#7f9984] hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-colors cursor-pointer min-w-[40px] min-h-[40px] flex items-center justify-center"
                         title="حذف قاعدة التسعير"
                         aria-label="حذف قاعدة التسعير"
                       >

@@ -85,10 +85,10 @@ export interface CalculationResult {
   orderedEye: OrderedEye;
   message?: string;
   calculationDetails?: {
-    rightSph?: number;
-    rightCyl?: number;
-    leftSph?: number;
-    leftCyl?: number;
+    rightSph?: number | null;
+    rightCyl?: number | null;
+    leftSph?: number | null;
+    leftCyl?: number | null;
     maxAbsValue: number;
     appliedRange: string;
   };

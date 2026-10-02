@@ -1,22 +1,46 @@
 import { PricingRule, CalculationResult, Company, LensType, OrderedEye } from '../types';
 
-export function parseDiopter(val: string | number | undefined | null): number {
-  if (val === undefined || val === null) return 0;
+/**
+ * Parses diopter input.
+ * Returns null if the value is empty, undefined, null, or whitespace.
+ * Never converts empty inputs to 0.
+ */
+export function parseOptionalDiopter(val: string | number | undefined | null): number | null {
+  if (val === undefined || val === null) return null;
   if (typeof val === 'number') {
-    return isNaN(val) ? 0 : val;
+    return isNaN(val) ? null : val;
   }
   const cleanStr = val.toString().trim().replace(',', '.');
-  if (cleanStr === '' || cleanStr === '+' || cleanStr === '-') return 0;
+  if (cleanStr === '' || cleanStr === '+' || cleanStr === '-') return null;
   const num = parseFloat(cleanStr);
-  return isNaN(num) ? 0 : num;
+  return isNaN(num) ? null : num;
 }
 
+/**
+ * Backward compatibility parser when a numeric fallback is needed.
+ */
+export function parseDiopter(val: string | number | undefined | null): number {
+  return parseOptionalDiopter(val) ?? 0;
+}
+
+/**
+ * Formats a number to optical diopter notation (+1.50, -1.50).
+ */
 export function formatDiopter(val: number): string {
   const rounded = Math.round(val * 100) / 100;
   const formatted = Math.abs(rounded).toFixed(2);
   if (rounded > 0) return `+${formatted}`;
   if (rounded < 0) return `-${formatted}`;
   return '0.00';
+}
+
+/**
+ * Formats an optional diopter value for display.
+ * If empty/null, returns empty string.
+ */
+export function formatOptionalDiopter(val: number | null | undefined): string {
+  if (val === null || val === undefined) return '';
+  return formatDiopter(val);
 }
 
 export function formatRange(min: number, max: number): string {
@@ -27,10 +51,10 @@ export function calculateLensPrice(
   companyId: string,
   lensTypeId: string,
   orderedEye: OrderedEye,
-  rightSph: string | number,
-  rightCyl: string | number,
-  leftSph: string | number,
-  leftCyl: string | number,
+  rightSph: string | number | null | undefined,
+  rightCyl: string | number | null | undefined,
+  leftSph: string | number | null | undefined,
+  leftCyl: string | number | null | undefined,
   rules: PricingRule[],
   companies: Company[],
   lensTypes: LensType[]
@@ -54,27 +78,50 @@ export function calculateLensPrice(
     };
   }
 
-  // Parse diopter inputs
-  const parsedRSph = parseDiopter(rightSph);
-  const parsedRCyl = parseDiopter(rightCyl);
-  const parsedLSph = parseDiopter(leftSph);
-  const parsedLCyl = parseDiopter(leftCyl);
+  // Parse diopter inputs strictly as optional numbers (null if empty)
+  const parsedRSph = parseOptionalDiopter(rightSph);
+  const parsedRCyl = parseOptionalDiopter(rightCyl);
+  const parsedLSph = parseOptionalDiopter(leftSph);
+  const parsedLCyl = parseOptionalDiopter(leftCyl);
 
-  const absRSph = Math.abs(parsedRSph);
-  const absRCyl = Math.abs(parsedRCyl);
-  const absLSph = Math.abs(parsedLSph);
-  const absLCyl = Math.abs(parsedLCyl);
+  // Collect ONLY the values that were actually entered by the user
+  const enteredAbsValues: number[] = [];
 
-  // Calculate the maximum absolute value based on orderedEye
-  let rawMax = 0;
-  if (orderedEye === 'right') {
-    rawMax = Math.max(absRSph, absRCyl);
-  } else if (orderedEye === 'left') {
-    rawMax = Math.max(absLSph, absLCyl);
-  } else {
-    rawMax = Math.max(absRSph, absRCyl, absLSph, absLCyl);
+  if (orderedEye !== 'left') {
+    if (parsedRSph !== null) enteredAbsValues.push(Math.abs(parsedRSph));
+    if (parsedRCyl !== null) enteredAbsValues.push(Math.abs(parsedRCyl));
   }
 
+  if (orderedEye !== 'right') {
+    if (parsedLSph !== null) enteredAbsValues.push(Math.abs(parsedLSph));
+    if (parsedLCyl !== null) enteredAbsValues.push(Math.abs(parsedLCyl));
+  }
+
+  // If no prescription values were entered at all:
+  if (enteredAbsValues.length === 0) {
+    return {
+      found: false,
+      price: null,
+      maxAbsValue: 0,
+      matchedRule: null,
+      companyName,
+      lensTypeName,
+      orderedEye,
+      message: 'يرجى إدخال المقاس المطلوب (SPH أو CYL)',
+      calculationDetails: {
+        rightSph: orderedEye !== 'left' ? parsedRSph : null,
+        rightCyl: orderedEye !== 'left' ? parsedRCyl : null,
+        leftSph: orderedEye !== 'right' ? parsedLSph : null,
+        leftCyl: orderedEye !== 'right' ? parsedLCyl : null,
+        maxAbsValue: 0,
+        appliedRange: 'غير محدد',
+      },
+    };
+  }
+
+  // Calculate the maximum absolute value strictly from entered values
+  // Example: SPH = -1.50, CYL = empty -> max is ABS(-1.50) = 1.50
+  const rawMax = Math.max(...enteredAbsValues);
   const maxAbsValue = Math.round(rawMax * 100) / 100;
 
   // Filter pricing rules for this specific Company and Lens Type
@@ -95,10 +142,10 @@ export function calculateLensPrice(
       orderedEye,
       message: `لا توجد قواعد تسعير مسجلة لشركة "${companyName}" ونوع "${lensTypeName}"`,
       calculationDetails: {
-        rightSph: orderedEye !== 'left' ? parsedRSph : undefined,
-        rightCyl: orderedEye !== 'left' ? parsedRCyl : undefined,
-        leftSph: orderedEye !== 'right' ? parsedLSph : undefined,
-        leftCyl: orderedEye !== 'right' ? parsedLCyl : undefined,
+        rightSph: orderedEye !== 'left' ? parsedRSph : null,
+        rightCyl: orderedEye !== 'left' ? parsedRCyl : null,
+        leftSph: orderedEye !== 'right' ? parsedLSph : null,
+        leftCyl: orderedEye !== 'right' ? parsedLCyl : null,
         maxAbsValue,
         appliedRange: 'غير متوفر',
       },
@@ -123,10 +170,10 @@ export function calculateLensPrice(
       orderedEye,
       message: `لا يوجد نطاق تسعير يشمل المقاس ${maxAbsValue.toFixed(2)} لهذه العدسة`,
       calculationDetails: {
-        rightSph: orderedEye !== 'left' ? parsedRSph : undefined,
-        rightCyl: orderedEye !== 'left' ? parsedRCyl : undefined,
-        leftSph: orderedEye !== 'right' ? parsedLSph : undefined,
-        leftCyl: orderedEye !== 'right' ? parsedLCyl : undefined,
+        rightSph: orderedEye !== 'left' ? parsedRSph : null,
+        rightCyl: orderedEye !== 'left' ? parsedRCyl : null,
+        leftSph: orderedEye !== 'right' ? parsedLSph : null,
+        leftCyl: orderedEye !== 'right' ? parsedLCyl : null,
         maxAbsValue,
         appliedRange: 'خارج النطاق',
       },
@@ -145,10 +192,10 @@ export function calculateLensPrice(
     lensTypeName,
     orderedEye,
     calculationDetails: {
-      rightSph: orderedEye !== 'left' ? parsedRSph : undefined,
-      rightCyl: orderedEye !== 'left' ? parsedRCyl : undefined,
-      leftSph: orderedEye !== 'right' ? parsedLSph : undefined,
-      leftCyl: orderedEye !== 'right' ? parsedLCyl : undefined,
+      rightSph: orderedEye !== 'left' ? parsedRSph : null,
+      rightCyl: orderedEye !== 'left' ? parsedRCyl : null,
+      leftSph: orderedEye !== 'right' ? parsedLSph : null,
+      leftCyl: orderedEye !== 'right' ? parsedLCyl : null,
       maxAbsValue,
       appliedRange: formatRange(min, max),
     },

@@ -70,30 +70,30 @@ function MainApp() {
     }
 
     return (
-      <div className="min-h-screen bg-slate-50 flex flex-col text-slate-800">
+      <div className="min-h-screen bg-[#f7f9f7] flex flex-col text-[#152017] selection:bg-[#d6e7d9] selection:text-[#19271b] relative">
         <Header onLogout={handleLogout} />
 
         {/* Database connection badge banner (subtle, clean) */}
         {!isSupabaseConfigured && (
-          <div className="bg-amber-50 border-b border-amber-200/80 px-4 py-2 text-center text-xs font-semibold text-amber-800 flex items-center justify-center gap-1.5">
-            <Database className="w-3.5 h-3.5 text-amber-600" />
+          <div className="bg-[#edf4ee] border-b border-[#d3dfd5] px-4 py-2 text-center text-xs font-semibold text-[#304835] flex items-center justify-center gap-1.5">
+            <Database className="w-3.5 h-3.5 text-[#517357]" />
             <span>يعمل التطبيق حالياً في وضع التخزين المحلي. لربط Supabase أضف VITE_SUPABASE_URL و VITE_SUPABASE_ANON_KEY.</span>
           </div>
         )}
 
-        <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8">
+        <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-9">
           {loading ? (
-            <div className="flex flex-col items-center justify-center min-h-[300px] text-slate-400 gap-2">
-              <Loader2 className="w-7 h-7 text-slate-900 animate-spin" />
-              <span className="text-xs font-semibold text-slate-600">جاري تحميل البيانات من قاعدة البيانات...</span>
+            <div className="flex flex-col items-center justify-center min-h-[300px] text-[#6d8a73] gap-2.5">
+              <Loader2 className="w-7 h-7 text-[#384e3c] animate-spin" />
+              <span className="text-xs font-semibold text-[#4c6851]">جاري تحميل البيانات من قاعدة البيانات...</span>
             </div>
           ) : (
             children
           )}
         </main>
 
-        <footer className="py-4 border-t border-slate-200/80 bg-white/60 text-center text-xs text-slate-400">
-          نور للبصريات · نظام تسعير العدسات والعملاء
+        <footer className="py-5 border-t border-[#dfe8e1] bg-white/80 backdrop-blur-xs text-center text-xs text-[#6e8773] tracking-wide">
+          نور للبصريات · نظام تسعير العدسات وسجل العملاء · NOUR OPTICS ATELIER
         </footer>
       </div>
     );

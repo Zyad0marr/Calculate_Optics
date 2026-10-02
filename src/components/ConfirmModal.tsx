@@ -23,32 +23,32 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-150">
+    <div className="fixed inset-0 z-50 bg-[#0d150f]/65 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-150">
       <div 
-        className="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-slate-100 space-y-4 text-center select-none"
+        className="glass-surface bg-white/95 rounded-3xl max-w-sm w-full p-6 sm:p-7 shadow-[0_20px_50px_rgba(15,22,17,0.35)] border border-[#d2ded4] space-y-4 text-center select-none"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="w-12 h-12 bg-rose-50 text-rose-600 rounded-2xl mx-auto flex items-center justify-center">
+        <div className="w-12 h-12 bg-rose-50 text-rose-700 rounded-2xl mx-auto flex items-center justify-center border border-rose-200/80 shadow-xs">
           <AlertTriangle className="w-6 h-6 stroke-[2]" />
         </div>
 
         <div>
-          <h4 className="text-lg font-bold text-slate-900 mb-1">{title}</h4>
-          <p className="text-sm font-medium text-slate-600 leading-relaxed">{message}</p>
+          <h4 className="text-lg font-bold text-[#141d16] mb-1">{title}</h4>
+          <p className="text-sm font-medium text-[#57705c] leading-relaxed">{message}</p>
         </div>
 
         <div className="flex items-center gap-3 pt-2">
           <button
             type="button"
             onClick={onCancel}
-            className="flex-1 h-11 text-sm font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors cursor-pointer"
+            className="flex-1 h-11 text-sm font-semibold text-[#304434] bg-[#eef4ee] hover:bg-[#e0ece2] border border-[#c9d8cc] rounded-xl transition-all cursor-pointer"
           >
             {cancelLabel}
           </button>
           <button
             type="button"
             onClick={onConfirm}
-            className="flex-1 h-11 text-sm font-semibold text-white bg-rose-600 hover:bg-rose-700 rounded-xl shadow-xs transition-colors cursor-pointer"
+            className="flex-1 h-11 text-sm font-semibold text-white bg-rose-700 hover:bg-rose-800 rounded-xl shadow-sm transition-all cursor-pointer active:scale-98"
           >
             {confirmLabel}
           </button>
