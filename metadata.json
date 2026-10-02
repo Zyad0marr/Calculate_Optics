@@ -1,0 +1,8 @@
+{
+  "name": "Nour Optics - نظام تسعير العدسات",
+  "description": "نظام احترافي خاص لإدارة وحساب أسعار عدسات النظارات الطبية لـ نور للبصريات",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
